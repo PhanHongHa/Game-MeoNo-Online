@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mèo Nổ Online 💥🐱</title>
+  <meta name="description"
+    content="Chơi Mèo Nổ (Exploding Kittens) online cùng bạn bè - trò chơi bài chiến thuật vui nhộn!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- ── SCREENS ─────────────────────────────────────────────── -->
+
+  <!-- Landing Screen -->
+  <div id="screen-landing" class="screen active">
+    <div class="landing-bg">
+      <div class="floating-card" style="--delay:0s;--x:10%;--y:20%">💥</div>
+      <div class="floating-card" style="--delay:0.5s;--x:85%;--y:15%">🐱</div>
+      <div class="floating-card" style="--delay:1s;--x:70%;--y:70%">🔧</div>
+      <div class="floating-card" style="--delay:1.5s;--x:15%;--y:75%">⚡</div>
+      <div class="floating-card" style="--delay:2s;--x:50%;--y:85%">🔮</div>
+      <div class="floating-card" style="--delay:2.5s;--x:40%;--y:10%">🚫</div>
+    </div>
+    <div class="landing-content">
+      <div class="logo-area">
+        <div class="logo-emoji">💥🐱</div>
+        <h1 class="logo-title">Mèo Nổ</h1>
+        <p class="logo-sub">Online • Multiplayer Card Game</p>
+      </div>
+      <div class="menu-card">
+        <div class="input-group">
+          <label for="player-name">Tên của bạn</label>
+          <input id="player-name" type="text" placeholder="Nhập tên..." maxlength="16" autocomplete="off" />
+        </div>
+        <div class="menu-buttons">
+          <button id="btn-create" class="btn btn-primary" onclick="showCreateRoom()">
+            <span>🏠</span> Tạo Phòng
+          </button>
+          <button id="btn-join" class="btn btn-secondary" onclick="showJoinRoom()">
+            <span>🚪</span> Vào Phòng
+          </button>
+        </div>
+        <div id="join-form" class="join-form hidden">
+          <div class="input-group">
+            <label for="room-code-input">Mã Phòng</label>
+            <input id="room-code-input" type="text" placeholder="XXXX" maxlength="4" autocomplete="off"
+              style="text-transform:uppercase;text-align:center;font-size:1.5rem;letter-spacing:0.3em" />
+          </div>
+          <button class="btn btn-accent" onclick="joinRoom()">Tham Gia →</button>
+        </div>
+      </div>
+      <div class="how-to-play">
+        <h3>📖 Cách chơi nhanh</h3>
+        <div class="rules-grid">
+          <div class="rule-item"><span>💥</span><span>Rút Mèo Nổ = thua (trừ khi có 🔧)</span></div>
+          <div class="rule-item"><span>⏭️</span><span>Bỏ lượt không cần rút bài</span></div>
+          <div class="rule-item"><span>⚡</span><span>Bắt người sau rút 2 lần</span></div>
+          <div class="rule-item"><span>🔮</span><span>Xem 3 lá trên cùng</span></div>
+          <div class="rule-item"><span>🚫</span><span>Chặn hành động của người khác</span></div>
+          <div class="rule-item"><span>🐱+🐱</span><span>Ghép đôi mèo để ăn trộm bài</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lobby Screen -->
+  <div id="screen-lobby" class="screen">
+    <div class="lobby-container">
+      <div class="lobby-header">
+        <h2>🏠 Phòng chờ</h2>
+        <div class="room-code-display">
+          <span class="code-label">Mã phòng</span>
+          <span id="lobby-code" class="code-value">----</span>
+          <button class="btn-copy" onclick="copyRoomCode()" title="Sao chép mã">📋</button>
+        </div>
+      </div>
+
+      <div class="player-list" id="lobby-players"></div>
+
+      <div class="lobby-actions">
+        <button id="btn-start" class="btn btn-primary btn-large hidden" onclick="startGame()">
+          🎮 Bắt Đầu Chơi
+        </button>
+        <button id="btn-custom-deck" class="btn btn-custom-deck hidden" onclick="openCustomDeck()">
+          ⚙️ Tùy Chỉnh Bộ Bài
+        </button>
+        <div id="custom-deck-badge" class="custom-deck-badge hidden">⚙️ Bộ bài đã tùy chỉnh</div>
+        <p class="waiting-text" id="waiting-text">Đang chờ người chơi...</p>
+        <button class="btn btn-ghost" onclick="leaveRoom()">← Rời phòng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Deck Modal -->
+  <div id="custom-deck-overlay" class="overlay hidden" onclick="handleCustomDeckBackdrop(event)">
+    <div class="overlay-box custom-deck-box">
+      <div class="custom-deck-header">
+        <div>
+          <h3>⚙️ Tùy Chỉnh Bộ Bài</h3>
+          <p class="custom-deck-sub">Chỉnh số lượng từng loại lá bài theo luật của bạn</p>
+        </div>
+
+        <div class="custom-deck-total">
+          <span class="total-label">Tổng</span>
+          <span id="cd-total" class="total-value">0</span>
+          <span class="total-label">lá</span>
+        </div>
+      </div>
+
+      <div class="custom-deck-sections">
+        <!-- Danger zone -->
+        <div class="cd-section">
+          <div class="cd-section-title danger">💥 Nguy hiểm</div>
+          <div class="cd-row">
+            <div class="cd-card-info">
+              <span class="cd-emoji">💥</span>
+              <div>
+                <div class="cd-name">Mèo Nổ</div>
+                <div class="cd-desc">Rút là thua (mặc định: số người - 1)</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('bombCount',-1)">−</button>
+              <input id="cd-bombCount" class="cd-input" type="number" min="1" max="10" value="1"
+                onchange="cdSync('bombCount')" />
+              <button class="cd-btn" onclick="cdStep('bombCount',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info">
+              <span class="cd-emoji">🔧</span>
+              <div>
+                <div class="cd-name">Tháo Ngòi</div>
+                <div class="cd-desc">Cứu mạng khi rút Mèo Nổ</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('defuse',-1)">−</button>
+              <input id="cd-defuse" class="cd-input" type="number" min="0" max="20" value="6"
+                onchange="cdSync('defuse')" />
+              <button class="cd-btn" onclick="cdStep('defuse',1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action cards -->
+        <div class="cd-section">
+          <div class="cd-section-title action">⚡ Lá Hành Động</div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">⏭️</span>
+              <div>
+                <div class="cd-name">Bỏ Lượt</div>
+                <div class="cd-desc">Kết thúc lượt không rút bài</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('skip',-1)">−</button>
+              <input id="cd-skip" class="cd-input" type="number" min="0" max="20" value="4" onchange="cdSync('skip')" />
+              <button class="cd-btn" onclick="cdStep('skip',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">⚡</span>
+              <div>
+                <div class="cd-name">Tấn Công</div>
+                <div class="cd-desc">Bắt người sau rút 2 lần</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('attack',-1)">−</button>
+              <input id="cd-attack" class="cd-input" type="number" min="0" max="20" value="4"
+                onchange="cdSync('attack')" />
+              <button class="cd-btn" onclick="cdStep('attack',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🔀</span>
+              <div>
+                <div class="cd-name">Xáo Trộn</div>
+                <div class="cd-desc">Xáo ngẫu nhiên bộ bài</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('shuffle',-1)">−</button>
+              <input id="cd-shuffle" class="cd-input" type="number" min="0" max="20" value="4"
+                onchange="cdSync('shuffle')" />
+              <button class="cd-btn" onclick="cdStep('shuffle',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🔮</span>
+              <div>
+                <div class="cd-name">Nhìn Trước</div>
+                <div class="cd-desc">Xem 3 lá trên cùng</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('see_future',-1)">−</button>
+              <input id="cd-see_future" class="cd-input" type="number" min="0" max="20" value="5"
+                onchange="cdSync('see_future')" />
+              <button class="cd-btn" onclick="cdStep('see_future',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🚫</span>
+              <div>
+                <div class="cd-name">Chặn Đòn</div>
+                <div class="cd-desc">Hủy hành động của người khác</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('nope',-1)">−</button>
+              <input id="cd-nope" class="cd-input" type="number" min="0" max="20" value="5" onchange="cdSync('nope')" />
+              <button class="cd-btn" onclick="cdStep('nope',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🎁</span>
+              <div>
+                <div class="cd-name">Xin Bài</div>
+                <div class="cd-desc">Buộc người khác tặng 1 lá</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('favor',-1)">−</button>
+              <input id="cd-favor" class="cd-input" type="number" min="0" max="20" value="4"
+                onchange="cdSync('favor')" />
+              <button class="cd-btn" onclick="cdStep('favor',1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cat cards -->
+        <div class="cd-section">
+          <div class="cd-section-title cat">🐱 Lá Mèo (ghép đôi → ăn trộm)</div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🌮</span>
+              <div>
+                <div class="cd-name">Mèo Taco</div>
+                <div class="cd-desc">Ghép đôi cùng loại để ăn trộm</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('cat_taco',-1)">−</button>
+              <input id="cd-cat_taco" class="cd-input" type="number" min="0" max="20" value="4"
+                onchange="cdSync('cat_taco')" />
+              <button class="cd-btn" onclick="cdStep('cat_taco',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🍉</span>
+              <div>
+                <div class="cd-name">Mèo Dưa</div>
+                <div class="cd-desc">Ghép đôi cùng loại để ăn trộm</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('cat_melon',-1)">−</button>
+              <input id="cd-cat_melon" class="cd-input" type="number" min="0" max="20" value="4"
+                onchange="cdSync('cat_melon')" />
+              <button class="cd-btn" onclick="cdStep('cat_melon',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">😻</span>
+              <div>
+                <div class="cd-name">Mèo Râu</div>
+                <div class="cd-desc">Ghép đôi cùng loại để ăn trộm</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('cat_beard',-1)">−</button>
+              <input id="cd-cat_beard" class="cd-input" type="number" min="0" max="20" value="4"
+                onchange="cdSync('cat_beard')" />
+              <button class="cd-btn" onclick="cdStep('cat_beard',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🥔</span>
+              <div>
+                <div class="cd-name">Mèo Khoai</div>
+                <div class="cd-desc">Ghép đôi cùng loại để ăn trộm</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('cat_potato',-1)">−</button>
+              <input id="cd-cat_potato" class="cd-input" type="number" min="0" max="20" value="4"
+                onchange="cdSync('cat_potato')" />
+              <button class="cd-btn" onclick="cdStep('cat_potato',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🌈</span>
+              <div>
+                <div class="cd-name">Mèo Cầu Vồng</div>
+                <div class="cd-desc">Ghép đôi cùng loại để ăn trộm</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('cat_rainbow',-1)">−</button>
+              <input id="cd-cat_rainbow" class="cd-input" type="number" min="0" max="20" value="4"
+                onchange="cdSync('cat_rainbow')" />
+              <button class="cd-btn" onclick="cdStep('cat_rainbow',1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="custom-deck-footer">
+        <button class="btn btn-ghost" onclick="resetCustomDeck()">↺ Về mặc định</button>
+
+        <button class="btn btn-primary" onclick="saveCustomDeck()">✓ Lưu cấu hình</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="screen-game" class="screen">
+    <!-- Top Bar -->
+    <div class="game-topbar">
+      <div class="topbar-left">
+        <span class="room-badge" id="game-room-code"></span>
+      </div>
+      <div class="topbar-center">
+        <div class="turn-indicator" id="turn-indicator">---</div>
+      </div>
+      <div class="topbar-right">
+        <div class="deck-counter">
+          <span>🃏</span>
+          <span id="deck-count">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opponents Area -->
+    <div class="opponents-area" id="opponents-area"></div>
+
+    <!-- Center: Deck + Discard -->
+    <div class="center-area">
+      <div class="discard-zone" id="discard-zone">
+        <div class="zone-label">Bỏ bài</div>
+        <div id="discard-top" class="discard-card"></div>
+      </div>
+
+      <div class="deck-zone" id="deck-zone" onclick="drawCard()">
+        <div class="zone-label">Bộ bài</div>
+        <div class="deck-card-stack">
+          <div class="deck-card">🐱</div>
+          <div class="deck-card offset1">🐱</div>
+          <div class="deck-card offset2">🐱</div>
+        </div>
+        <div class="draw-hint" id="draw-hint">Nhấn để rút</div>
+      </div>
+    </div>
+
+    <!-- See Future Overlay -->
+    <div id="see-future-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <h3>🔮 3 lá trên cùng (trên xuống dưới)</h3>
+        <div id="see-future-cards" class="see-future-cards"></div>
+        <button class="btn btn-primary" onclick="closeSEF()">Đóng</button>
+      </div>
+    </div>
+
+    <!-- Insert Bomb Overlay -->
+    <div id="insert-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <h3>🔧 Chôn Mèo Nổ vào đâu?</h3>
+        <p>Bộ bài có <span id="insert-deck-count">0</span> lá. Chọn vị trí (0 = dưới cùng):</p>
+        <div class="insert-controls">
+          <input id="insert-position" type="range" min="0" max="30" value="0" />
+          <span id="insert-pos-display">0</span>
+        </div>
+        <button class="btn btn-primary" onclick="insertBomb()">Chôn bom!</button>
+      </div>
+    </div>
+
+    <!-- Give Card Overlay (Favor) -->
+    <div id="give-card-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <h3>🎁 Người chơi muốn xin bài từ bạn</h3>
+        <p>Chọn 1 lá để cho:</p>
+        <div id="give-card-list" class="give-card-list"></div>
+      </div>
+    </div>
+
+    <!-- Target Select Overlay -->
+    <div id="target-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <h3 id="target-title">Chọn người chơi</h3>
+        <div id="target-list" class="target-list"></div>
+        <button class="btn btn-ghost" onclick="cancelTarget()">Hủy</button>
+      </div>
+    </div>
+
+    <!-- Nope Window -->
+    <div id="nope-banner" class="nope-banner hidden">
+      <div class="nope-content">
+        <span id="nope-action-text">Hành động đang chờ...</span>
+        <div id="nope-nopers"></div>
+        <button id="nope-btn" class="btn btn-nope" onclick="playNope()">🚫 NOPE!</button>
+        <div class="nope-timer-bar">
+          <div id="nope-timer-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- My Hand -->
+    <div class="hand-area">
+      <div class="hand-label">Bài của bạn (<span id="hand-count">0</span> lá)</div>
+      <div class="hand-cards" id="hand-cards"></div>
+      <div class="hand-actions" id="hand-actions">
+        <button id="btn-play-cards" class="btn btn-primary hidden" onclick="playSelectedCards()">
+          Đánh bài (<span id="selected-count">0</span>)
+        </button>
+        <button id="btn-cancel-select" class="btn btn-ghost hidden" onclick="clearSelection()">Bỏ chọn</button>
+      </div>
+    </div>
+
+    <!-- Game Log -->
+    <div class="game-log">
+      <div class="log-header">📜 Nhật ký</div>
+      <div id="game-log-list" class="log-list"></div>
+    </div>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="screen-gameover" class="screen">
+    <div class="gameover-container">
+      <div class="gameover-emoji" id="gameover-emoji">🏆</div>
+      <h2 id="gameover-title">Kết thúc!</h2>
+      <p id="gameover-subtitle"></p>
+      <button class="btn btn-primary btn-large" onclick="returnToLobby()">🏠 Về Sảnh</button>
+    </div>
+  </div>
+
+  <!-- Card Tooltip -->
+  <div id="card-tooltip" class="card-tooltip" role="tooltip">
+    <div class="ct-header">
+      <span class="ct-emoji" id="ct-emoji"></span>
+      <span class="ct-name" id="ct-name"></span>
+    </div>
+    <p class="ct-desc" id="ct-desc"></p>
+    <div class="ct-hint" id="ct-hint"></div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="game.js"></script>
+</body>
+
+</html>
