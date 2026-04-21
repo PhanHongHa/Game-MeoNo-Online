@@ -498,6 +498,98 @@ html, body {
 }
 @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
+/* ── CARD PLAYED NOTIFICATION ──────────────────────────────── */
+.card-played-notif {
+  position: fixed;
+  top: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  z-index: 500;
+  background: rgba(10, 11, 25, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-top: 3px solid var(--cpn-color, var(--primary));
+  border-radius: 12px;
+  padding: 0.65rem 1.25rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  animation: cpnIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events: none;
+  min-width: 180px;
+}
+.cpn-who {
+  font-size: 0.72rem;
+  color: rgba(240,240,255,0.6);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+}
+.cpn-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.cpn-emoji { font-size: 1.6rem; line-height: 1; }
+.cpn-name  {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--cpn-color, var(--text));
+}
+@keyframes cpnIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-16px) scale(0.88); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0)      scale(1);    }
+}
+.card-played-notif.cpn-hide {
+  animation: cpnOut 0.45s ease forwards;
+}
+@keyframes cpnOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0)      scale(1); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(-10px)  scale(0.92); }
+}
+
+/* ── YOUR TURN FLASH ───────────────────────────────────────── */
+.your-turn-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255,107,53,0.9);
+  animation: ytfIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  letter-spacing: 0.04em;
+}
+.your-turn-flash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    rgba(255,107,53,0.18) 0%,
+    transparent 70%);
+  animation: ytfPulse 0.5s ease-out;
+}
+@keyframes ytfIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes ytfPulse {
+  from { opacity: 1; } to { opacity: 0; }
+}
+.your-turn-flash.ytf-hide {
+  animation: ytfOut 0.45s ease forwards;
+}
+@keyframes ytfOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.15); }
+}
+
+
 /* ── CUSTOM DECK BUTTON & BADGE ────────────────────────────── */
 .btn-custom-deck {
   background: rgba(168, 85, 247, 0.15);

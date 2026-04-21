@@ -187,8 +187,63 @@ socket.on('game_state', (state) => {
     showScreen('screen-game');
   }
 
+  // ── Detect opponent playing a card ─────────────────────────────────────────
+  if (prev && state.discardPile?.length > (prev.discardPile?.length || 0)) {
+    const newCard = state.discardPile[state.discardPile.length - 1];
+    const whoPlayed = state.players.find(p => p.id === prev?.currentPlayerId);
+    // Only show notification if someone else (not me) played it
+    if (newCard && whoPlayed && whoPlayed.id !== myId) {
+      showCardPlayedNotif(whoPlayed.name, newCard);
+    }
+  }
+
+  // ── Detect it just became MY turn ──────────────────────────────────────────
+  const wasMyTurn = prev?.currentPlayerId === myId;
+  const isMyTurn  = state.currentPlayerId === myId;
+  if (!wasMyTurn && isMyTurn && state.phase === 'playing') {
+    showYourTurnFlash();
+  }
+
   renderGame(state, prev);
 });
+
+// ── CARD PLAYED NOTIFICATION ─────────────────────────────────────────────────
+function showCardPlayedNotif(playerName, card) {
+  // Remove any existing notif
+  document.getElementById('card-played-notif')?.remove();
+
+  const el = document.createElement('div');
+  el.id = 'card-played-notif';
+  el.className = 'card-played-notif';
+  el.innerHTML = `
+    <div class="cpn-who">${escHtml(playerName)} vừa đánh</div>
+    <div class="cpn-card">
+      <span class="cpn-emoji">${card.emoji}</span>
+      <span class="cpn-name">${escHtml(card.name)}</span>
+    </div>
+  `;
+  el.style.setProperty('--cpn-color', card.color || 'var(--primary)');
+  document.body.appendChild(el);
+
+  // Auto-remove after 2.8s
+  setTimeout(() => el.classList.add('cpn-hide'), 2400);
+  setTimeout(() => el.remove(), 2900);
+}
+
+// ── YOUR TURN FLASH ───────────────────────────────────────────────────────────
+function showYourTurnFlash() {
+  document.getElementById('your-turn-flash')?.remove();
+
+  const el = document.createElement('div');
+  el.id = 'your-turn-flash';
+  el.className = 'your-turn-flash';
+  el.textContent = '✨ Lượt của bạn!';
+  document.body.appendChild(el);
+
+  setTimeout(() => el.classList.add('ytf-hide'), 1600);
+  setTimeout(() => el.remove(), 2100);
+}
+
 
 // ── LOBBY RENDER ────────────────────────────────────────────────────────────────
 function renderLobby(state) {
