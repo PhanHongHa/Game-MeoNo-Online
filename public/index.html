@@ -313,9 +313,100 @@
         </div>
       </div>
 
+      <!-- Expansion Cards Section -->
+      <div class="cd-section">
+        <div class="cd-section-title expansion-title">🚀 Bản Mở Rộng <span class="cd-section-badge">Tùy chọn</span></div>
+        <div class="cd-section-note">Mặc định = 0 (tắt). Bật lên để chơi luật bá đạo hơn!</div>
+        <div class="cd-list">
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🙈</span>
+              <div>
+                <div class="cd-name">Mèo Khỏa Thân</div>
+                <div class="cd-desc">Ôm bom mà không chết</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('streaking_kitten',-1)">−</button>
+              <input id="cd-streaking_kitten" class="cd-input" type="number" min="0" max="6" value="0"
+                onchange="cdSync('streaking_kitten')" />
+              <button class="cd-btn" onclick="cdStep('streaking_kitten',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🌀</span>
+              <div>
+                <div class="cd-name">Mèo Sập Nguồn</div>
+                <div class="cd-desc">Không Tháo Ngòi được! (tối đa 1)</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('imploding_kitten',-1)">−</button>
+              <input id="cd-imploding_kitten" class="cd-input" type="number" min="0" max="1" value="0"
+                onchange="cdSync('imploding_kitten')" />
+              <button class="cd-btn" onclick="cdStep('imploding_kitten',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🍑</span>
+              <div>
+                <div class="cd-name">Lời Nguyền Mông Mèo</div>
+                <div class="cd-desc">Mù hóa đối thủ 1 lượt</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('curse_cat_butt',-1)">−</button>
+              <input id="cd-curse_cat_butt" class="cd-input" type="number" min="0" max="10" value="0"
+                onchange="cdSync('curse_cat_butt')" />
+              <button class="cd-btn" onclick="cdStep('curse_cat_butt',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">✏️</span>
+              <div>
+                <div class="cd-name">Thay Đổi Tương Lai</div>
+                <div class="cd-desc">Xem + sắp xếp lại 3 lá tiếp</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('alter_future',-1)">−</button>
+              <input id="cd-alter_future" class="cd-input" type="number" min="0" max="10" value="0"
+                onchange="cdSync('alter_future')" />
+              <button class="cd-btn" onclick="cdStep('alter_future',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">⏩</span>
+              <div>
+                <div class="cd-name">Siêu Qua Lượt</div>
+                <div class="cd-desc">Kết thúc TOÀN BỘ lượt bắt buộc</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('super_skip',-1)">−</button>
+              <input id="cd-super_skip" class="cd-input" type="number" min="0" max="10" value="0"
+                onchange="cdSync('super_skip')" />
+              <button class="cd-btn" onclick="cdStep('super_skip',1)">+</button>
+            </div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-card-info"><span class="cd-emoji">🎯</span>
+              <div>
+                <div class="cd-name">Tấn Công Có Mục Tiêu</div>
+                <div class="cd-desc">Chọn đích danh ai phải đi 2 lượt</div>
+              </div>
+            </div>
+            <div class="cd-controls">
+              <button class="cd-btn" onclick="cdStep('targeted_attack',-1)">−</button>
+              <input id="cd-targeted_attack" class="cd-input" type="number" min="0" max="10" value="0"
+                onchange="cdSync('targeted_attack')" />
+              <button class="cd-btn" onclick="cdStep('targeted_attack',1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="custom-deck-footer">
         <button class="btn btn-ghost" onclick="resetCustomDeck()">↺ Về mặc định</button>
-
         <button class="btn btn-primary" onclick="saveCustomDeck()">✓ Lưu cấu hình</button>
       </div>
     </div>

@@ -302,16 +302,23 @@ function renderLobby(state) {
 
 // ── CUSTOM DECK ────────────────────────────────────────────────────────────────
 const CD_DEFAULTS = {
-  bombCount: null, // will be set based on playerCount when opening
+  bombCount: null,
   defuse: 6, skip: 4, attack: 4, shuffle: 4, see_future: 5,
   nope: 5, favor: 4, cat_taco: 4, cat_melon: 4,
   cat_beard: 4, cat_potato: 4, cat_rainbow: 4,
+  // Expansions
+  streaking_kitten: 0, imploding_kitten: 0,
+  curse_cat_butt: 0, alter_future: 0,
+  super_skip: 0, targeted_attack: 0,
 };
 
 const CD_FIELDS = [
   'bombCount','defuse','skip','attack','shuffle',
   'see_future','nope','favor',
   'cat_taco','cat_melon','cat_beard','cat_potato','cat_rainbow',
+  // Expansions
+  'streaking_kitten','imploding_kitten','curse_cat_butt',
+  'alter_future','super_skip','targeted_attack',
 ];
 
 function openCustomDeck() {

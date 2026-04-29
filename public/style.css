@@ -955,3 +955,26 @@ html, body {
 .hand-card[data-type="alter_future"]     { border-top-color: #0891b2; }
 .hand-card[data-type="super_skip"]       { border-top-color: #059669; }
 .hand-card[data-type="targeted_attack"]  { border-top-color: #dc2626; }
+
+/* ── EXPANSION SECTION IN CUSTOM DECK MODAL ─────────────────────────────────── */
+.expansion-title { color: #a78bfa !important; }
+.cd-section-badge {
+  display: inline-block;
+  background: rgba(167,139,250,0.2);
+  border: 1px solid rgba(167,139,250,0.4);
+  border-radius: 20px;
+  font-size: 0.65rem;
+  padding: 1px 8px;
+  margin-left: 6px;
+  font-weight: 700;
+  color: #c4b5fd;
+  vertical-align: middle;
+}
+.cd-section-note {
+  font-size: 0.75rem;
+  color: rgba(167,139,250,0.7);
+  margin: -0.4rem 0 0.6rem;
+  padding: 0 0.25rem;
+  font-style: italic;
+}
+
