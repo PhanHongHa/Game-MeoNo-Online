@@ -882,3 +882,76 @@ html, body {
   .hand-card { width: 60px; height: 84px; }
   .hand-card .card-emoji { font-size: 1.3rem; }
 }
+
+/* ── CURSED HAND BANNER ─────────────────────────────────────────────────────── */
+.cursed-banner {
+  background: linear-gradient(90deg, rgba(147,51,234,0.3), rgba(109,40,217,0.2));
+  border: 1px solid rgba(147,51,234,0.5);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #d8b4fe;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  animation: curseFlicker 2s ease-in-out infinite;
+}
+@keyframes curseFlicker {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+.hand-card.cursed-card {
+  background: linear-gradient(145deg, #2d1b69, #1e1040) !important;
+  border-color: rgba(147,51,234,0.6) !important;
+}
+.hand-card.cursed-card .card-emoji { filter: blur(3px); }
+
+/* ── HELD BOMB BADGE ────────────────────────────────────────────────────────── */
+.held-bomb-badge {
+  background: linear-gradient(90deg, rgba(239,68,68,0.25), rgba(220,38,38,0.15));
+  border: 1px solid rgba(239,68,68,0.5);
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fca5a5;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  animation: bombPulse 1s ease-in-out infinite;
+}
+@keyframes bombPulse {
+  0%, 100% { box-shadow: 0 0 0   0   rgba(239,68,68,0.4); }
+  50%       { box-shadow: 0 0 12px 4px rgba(239,68,68,0.3); }
+}
+
+/* ── ALTER FUTURE OVERLAY ───────────────────────────────────────────────────── */
+.af-overlay-box { max-width: 360px; width: 92vw; }
+.af-subtitle { font-size: 0.8rem; color: var(--text-muted); margin: -0.5rem 0 1rem; }
+.af-cards-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.2rem; }
+.af-card {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-top: 3px solid #0891b2;
+  border-radius: 10px; padding: 0.6rem 0.8rem;
+}
+.af-pos  { font-size: 0.7rem; font-weight: 900; color: var(--text-muted); min-width: 16px; }
+.af-emoji { font-size: 1.5rem; }
+.af-name  { flex: 1; font-size: 0.85rem; font-weight: 700; }
+.af-btns  { display: flex; flex-direction: column; gap: 2px; }
+.af-btns button {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px; color: #fff; cursor: pointer;
+  font-size: 0.7rem; padding: 2px 6px; transition: background 0.15s;
+}
+.af-btns button:hover:not(:disabled) { background: rgba(255,255,255,0.18); }
+.af-btns button:disabled { opacity: 0.3; cursor: default; }
+
+/* ── EXPANSION CARD COLORS ──────────────────────────────────────────────────── */
+.hand-card[data-type="streaking_kitten"] { border-top-color: #f472b6; }
+.hand-card[data-type="imploding_kitten"] { border-top-color: #7c3aed; }
+.hand-card[data-type="curse_cat_butt"]   { border-top-color: #9333ea; }
+.hand-card[data-type="alter_future"]     { border-top-color: #0891b2; }
+.hand-card[data-type="super_skip"]       { border-top-color: #059669; }
+.hand-card[data-type="targeted_attack"]  { border-top-color: #dc2626; }

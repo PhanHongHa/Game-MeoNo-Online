@@ -19,40 +19,56 @@ const _ttDes = () => document.getElementById('ct-desc');
 const _ttHnt = () => document.getElementById('ct-hint');
 
 const CARD_HINTS = {
-  exploding_kitten: '💀 Rút lá này = thua ngay!',
-  defuse:           '🛡️ Tự động dùng khi rút Mèo Nổ',
-  skip:             '▶️ Nhấn để đánh — kết thúc lượt ngay',
-  attack:           '▶️ Nhấn để đánh — người sau rút 2 lần',
-  shuffle:          '▶️ Nhấn để đánh — xáo bộ bài',
-  see_future:       '▶️ Nhấn để đánh — xem 3 lá tiếp',
-  nope:             '⏱️ Chỉ dùng được khi có Nope Window!',
-  favor:            '▶️ Nhấn để đánh → chọn người để xin bài',
-  cat_taco:         '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
-  cat_melon:        '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
-  cat_beard:        '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
-  cat_potato:       '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
-  cat_rainbow:      '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
+  exploding_kitten:  '💀 Rút lá này = thua ngay!',
+  defuse:            '🛡️ Tự động dùng khi rút Mèo Nổ',
+  skip:              '▶️ Nhấn để đánh — kết thúc lượt ngay',
+  attack:            '▶️ Nhấn để đánh — người sau rút 2 lần',
+  shuffle:           '▶️ Nhấn để đánh — xáo bộ bài',
+  see_future:        '▶️ Nhấn để đánh — xem 3 lá tiếp',
+  nope:              '⏱️ Chỉ dùng được khi có Nope Window!',
+  favor:             '▶️ Nhấn để đánh → chọn người để xin bài',
+  cat_taco:          '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
+  cat_melon:         '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
+  cat_beard:         '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
+  cat_potato:        '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
+  cat_rainbow:       '🐱 Chọn 2 lá cùng loại → ăn trộm bài',
+  // Expansions
+  streaking_kitten:  '▶️ Giữ để ôm bom — đánh ra để chôn bom lại',
+  imploding_kitten:  '💀 Không thể Tháo Ngòi! Lần 2 rút = chết',
+  curse_cat_butt:    '▶️ Nhấn để đánh → chọn đối thủ để mù hóa',
+  alter_future:      '▶️ Xem và sắp xếp lại 3 lá trên cùng',
+  super_skip:        '▶️ Kết thúc TOÀN BỘ lượt bắt buộc!',
+  targeted_attack:   '▶️ Chọn mục tiêu cụ thể phải đi 2 lượt',
+  cursed:            '🚫 Bài bị nguyền! Bạn không biết đây là lá gì',
 };
 
 let _ttVisible = false;
 let _ttRaf = null;
 
-// Client-side card descriptions (server hand data may not include description)
 const CARD_DESCRIPTIONS = {
-  exploding_kitten: 'Bạn phát nổ! Trừ khi có lá Tháo Ngòi để thoát hiểm.',
-  defuse:           'Vô hiệu hóa Mèo Nổ và chôn nó lại vào bộ bài bất kỳ vị trí.',
-  skip:             'Kết thúc lượt của bạn mà không cần rút bài từ bộ bài.',
-  attack:           'Kết thúc lượt và ép người tiếp theo phải rút bài 2 lần liên tiếp.',
-  shuffle:          'Xáo trộn ngẫu nhiên toàn bộ bộ bài đang dùng.',
-  see_future:       'Bí mật xem 3 lá bài trên cùng của bộ bài (chỉ mình bạn thấy).',
-  nope:             'Hủy bỏ hành động vừa được đánh bởi bất kỳ người chơi nào (trừ Mèo Nổ/Tháo Ngòi).',
-  favor:            'Buộc 1 người chơi khác phải tự chọn 1 lá bài để tặng cho bạn.',
-  cat_taco:         'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
-  cat_melon:        'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
-  cat_beard:        'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
-  cat_potato:       'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
-  cat_rainbow:      'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
+  exploding_kitten:  'Bạn phát nổ! Trừ khi có lá Tháo Ngòi để thoát hiểm.',
+  defuse:            'Vô hiệu hóa Mèo Nổ và chôn nó lại vào bộ bài bất kỳ vị trí.',
+  skip:              'Kết thúc lượt của bạn mà không cần rút bài từ bộ bài.',
+  attack:            'Kết thúc lượt và ép người tiếp theo phải rút bài 2 lần liên tiếp.',
+  shuffle:           'Xáo trộn ngẫu nhiên toàn bộ bộ bài đang dùng.',
+  see_future:        'Bí mật xem 3 lá bài trên cùng của bộ bài (chỉ mình bạn thấy).',
+  nope:              'Hủy bỏ hành động vừa được đánh bởi bất kỳ người chơi nào.',
+  favor:             'Buộc 1 người chơi khác phải tự chọn 1 lá bài để tặng cho bạn.',
+  cat_taco:          'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
+  cat_melon:         'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
+  cat_beard:         'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
+  cat_potato:        'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
+  cat_rainbow:       'Lá mèo đặc biệt. Chơi 2 lá cùng loại để ăn trộm ngẫu nhiên 1 lá từ đối thủ.',
+  // Expansions
+  streaking_kitten:  'Giữ lá này trên tay để ôm 1 quả Bom mà không chết! Nếu đánh ra khi đang ôm bom, bạn phải chôn bom lại.',
+  imploding_kitten:  'Không thể Tháo Ngòi! Lần đầu rút: lật ngửa và quay về bộ bài. Lần sau rút: chết ngay!',
+  curse_cat_butt:    'Mù hóa 1 đối thủ — họ không nhìn thấy bài của mình cho đến hết lượt.',
+  alter_future:      'Xem 3 lá trên cùng bộ bài và được sắp xếp lại chúng theo ý muốn. Cưực kỳ bá đạo!',
+  super_skip:        'Kết thúc TOÀN BỘ các lượt bắt buộc của bạn (kể cả khi bị Tấn Công dồn dập).',
+  targeted_attack:   'Chọn đích danh 1 người bất kỳ phải đi thay bạn 2 lượt. Không cần là người kế tiếp!',
+  cursed:            'Bài đang bị nguyền bởi Lời Nguyền Mông Mèo! Bạn không biết đây là lá gì.',
 };
+
 
 function showCardTooltip(card, anchorEl) {
   const el = _ttEl();
@@ -416,6 +432,39 @@ function renderGame(state, prev) {
   // Hand
   renderHand(state, me, isMyTurn);
 
+  // Cursed banner
+  let cursedBanner = document.getElementById('cursed-banner');
+  if (me?.cursed) {
+    if (!cursedBanner) {
+      cursedBanner = document.createElement('div');
+      cursedBanner.id = 'cursed-banner';
+      cursedBanner.className = 'cursed-banner';
+      cursedBanner.textContent = '🍑 Bài của bạn đang bị nguyền! Bạn không thể nhìn thấy bài mình đang cầm.';
+      document.getElementById('hand-area')?.prepend(cursedBanner);
+    }
+  } else {
+    cursedBanner?.remove();
+  }
+
+  // Held bomb badge
+  let heldBadge = document.getElementById('held-bomb-badge');
+  if (me?.heldBomb) {
+    if (!heldBadge) {
+      heldBadge = document.createElement('div');
+      heldBadge.id = 'held-bomb-badge';
+      heldBadge.className = 'held-bomb-badge';
+      heldBadge.textContent = '🙈 Đang ôm bom bí mật!';
+      document.getElementById('hand-area')?.prepend(heldBadge);
+    }
+  } else {
+    heldBadge?.remove();
+  }
+
+  // Alter Future overlay
+  if (state.alteringFuture && state.seeFutureCards?.length) {
+    showAlterFutureOverlay(state.seeFutureCards);
+  }
+
   // Log
   renderLog(state.log);
 
@@ -425,6 +474,52 @@ function renderGame(state, prev) {
   // Overlays
   handleOverlays(state, me, isMyTurn);
 }
+
+// ── ALTER FUTURE OVERLAY ─────────────────────────────────────────────────────
+let _alterCards = []; // current order
+
+function showAlterFutureOverlay(cards) {
+  const ov = document.getElementById('alter-future-overlay');
+  if (!ov || !ov.classList.contains('hidden')) return; // already open
+
+  _alterCards = [...cards];
+  renderAlterFutureCards();
+  ov.classList.remove('hidden');
+}
+
+function renderAlterFutureCards() {
+  const container = document.getElementById('alter-future-cards');
+  if (!container) return;
+  container.innerHTML = '';
+  _alterCards.forEach((card, idx) => {
+    const div = document.createElement('div');
+    div.className = 'af-card';
+    div.innerHTML = `
+      <div class="af-pos">${idx + 1}</div>
+      <div class="af-emoji">${card.emoji}</div>
+      <div class="af-name">${escHtml(card.name)}</div>
+      <div class="af-btns">
+        <button onclick="afMove(${idx},-1)" ${idx === 0 ? 'disabled' : ''}>▲</button>
+        <button onclick="afMove(${idx}, 1)" ${idx === _alterCards.length - 1 ? 'disabled' : ''}>▼</button>
+      </div>
+    `;
+    div.style.borderTopColor = card.color || 'var(--primary)';
+    container.appendChild(div);
+  });
+}
+
+function afMove(idx, dir) {
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= _alterCards.length) return;
+  [_alterCards[idx], _alterCards[newIdx]] = [_alterCards[newIdx], _alterCards[idx]];
+  renderAlterFutureCards();
+}
+
+function confirmAlterFuture() {
+  socket.emit('alter_future_set', { code: currentRoom, cardIds: _alterCards.map(c => c.id) });
+  document.getElementById('alter-future-overlay').classList.add('hidden');
+}
+
 
 function renderOpponents(state, me) {
   const area = document.getElementById('opponents-area');
@@ -533,16 +628,18 @@ function playSelectedCards() {
 
   const cards = selectedCardIds.map(id => me.hand.find(c => c.id === id)).filter(Boolean);
   if (cards.length === 0) return;
-
   const card = cards[0];
 
-  // Cards that need a target
-  const needsTarget = ['favor', 'cat_taco', 'cat_melon', 'cat_beard', 'cat_potato', 'cat_rainbow'];
-  if (needsTarget.includes(card.type) || (cards.length === 2 && needsTarget.includes(card.type))) {
-    if (cards.length === 1 && ['cat_taco','cat_melon','cat_beard','cat_potato','cat_rainbow'].includes(card.type)) {
-      showToast('Chọn 2 lá mèo cùng loại để ghép đôi!');
-      return;
-    }
+  const catTypes = ['cat_taco','cat_melon','cat_beard','cat_potato','cat_rainbow'];
+  const needsTarget = ['favor', 'curse_cat_butt', 'targeted_attack', ...catTypes];
+
+  // Cat cards: need 2 of same type
+  if (catTypes.includes(card.type) && cards.length === 1) {
+    showToast('Chọn 2 lá mèo cùng loại để ghép đôi!');
+    return;
+  }
+
+  if (needsTarget.includes(card.type) || (cards.length === 2 && catTypes.includes(card.type))) {
     showTargetOverlay(card.type, cards.length);
     return;
   }
@@ -553,15 +650,23 @@ function playSelectedCards() {
 
 function showTargetOverlay(cardType, cardCount) {
   const overlay = document.getElementById('target-overlay');
-  const title = document.getElementById('target-title');
-  const list = document.getElementById('target-list');
+  const title   = document.getElementById('target-title');
+  const list    = document.getElementById('target-list');
 
-  if (cardType === 'favor') title.textContent = '🎁 Chọn người để xin bài';
-  else title.textContent = '🐱 Chọn người để ăn trộm bài';
+  const titles = {
+    favor:           '🎁 Chọn người để xin bài',
+    curse_cat_butt:  '🍑 Chọn người để mù hóa',
+    targeted_attack: '🎯 Chọn mục tiêu bị tấn công (2 lượt)',
+  };
+  title.textContent = titles[cardType] || '🐱 Chọn người để ăn trộm bài';
 
   list.innerHTML = '';
-  const opponents = gameState.players.filter(p => !p.isMe && p.alive && p.handCount > 0);
-  if (opponents.length === 0) { showToast('Không có ai có bài!'); return; }
+  const alive = gameState.players.filter(p => !p.isMe && p.alive);
+  const opponents = (cardType === 'targeted_attack' || cardType === 'curse_cat_butt')
+    ? alive
+    : alive.filter(p => p.handCount > 0);
+
+  if (opponents.length === 0) { showToast('Không có ai đủ điều kiện!'); return; }
 
   opponents.forEach(p => {
     const btn = document.createElement('button');
@@ -596,30 +701,29 @@ function drawCard() {
 // ── NOPE ────────────────────────────────────────────────────────────────────────
 function handleNopeWindow(state, me) {
   const banner = document.getElementById('nope-banner');
-  const btn = document.getElementById('nope-btn');
+  const btn    = document.getElementById('nope-btn');
 
   if (state.phase === 'nope_window' && state.nope) {
     banner.classList.remove('hidden');
     const actionNames = {
       skip: 'Bỏ Lượt ⏭️', attack: 'Tấn Công ⚡', shuffle: 'Xáo Trộn 🔀',
       see_future: 'Nhìn Trước 🔮', favor: 'Xin Bài 🎁', cat_steal: 'Ăn Trộm 🐱',
+      super_skip: 'Siêu Qua Lượt ⏩', targeted_attack: 'Tấn Công Mục Tiêu 🎯',
+      alter_future: 'Thay Đổi Tương Lai ✏️', curse_cat_butt: 'Lời Nguyền Mông Mèo 🍑',
     };
     const actor = state.players.find(p => p.id === state.nope.action?.playerId);
     document.getElementById('nope-action-text').textContent =
       `${actor?.name || '?'} dùng ${actionNames[state.nope.action?.type] || state.nope.action?.type}`;
-
     document.getElementById('nope-nopers').textContent =
       state.nope.nopers?.length ? `Noped bởi: ${state.nope.nopers.join(', ')}` : '';
 
-    const hasNope = me?.hand?.some(c => c.type === 'nope') && !state.players.find(p => p.isMe)?.id === state.nope.action?.playerId;
     const isActor = state.nope.action?.playerId === myId;
     btn.disabled = isActor || !me?.hand?.some(c => c.type === 'nope');
-    btn.style.opacity = (isActor || !me?.hand?.some(c => c.type === 'nope')) ? '0.4' : '1';
+    btn.style.opacity = btn.disabled ? '0.4' : '1';
 
-    // Restart timer animation
     const fill = document.getElementById('nope-timer-fill');
     fill.style.animation = 'none';
-    fill.offsetHeight; // reflow
+    fill.offsetHeight;
     fill.style.animation = 'nopeTimer 3s linear forwards';
   } else {
     banner.classList.add('hidden');

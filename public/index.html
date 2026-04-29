@@ -400,6 +400,16 @@
       </div>
     </div>
 
+    <!-- Alter Future Overlay -->
+    <div id="alter-future-overlay" class="overlay hidden">
+      <div class="overlay-box af-overlay-box">
+        <h3>✏️ Thay Đổi Tương Lai</h3>
+        <p class="af-subtitle">Sắp xếp lại 3 lá bài sắp được rút (1 = trên cùng)</p>
+        <div id="alter-future-cards" class="af-cards-list"></div>
+        <button class="btn btn-primary" onclick="confirmAlterFuture()">✅ Xác nhận</button>
+      </div>
+    </div>
+
     <!-- Nope Window -->
     <div id="nope-banner" class="nope-banner hidden">
       <div class="nope-content">
@@ -413,7 +423,7 @@
     </div>
 
     <!-- My Hand -->
-    <div class="hand-area">
+    <div class="hand-area" id="hand-area">
       <div class="hand-label">Bài của bạn (<span id="hand-count">0</span> lá)</div>
       <div class="hand-cards" id="hand-cards"></div>
       <div class="hand-actions" id="hand-actions">
